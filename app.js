@@ -8,12 +8,12 @@ app.use(express.json());
 app.use(express.static('public'));
 
 //ROUTER
-const movieRouter = require('./routers/movieRouter.js')
-app.use('/movies',movieRouter)
+const movieRouter = require('./routers/movieRouter')
+app.use('/movies', movieRouter)
 
 //ERROR HANDLERS
-const notFound = require('./middlewares/notFound.js')
-const errorHandler = require('./middlewares/errorHandler.js')
+const notFound = require('./middlewares/notFound')
+const errorHandler = require('./middlewares/errorHandler')
 
 app.use(errorHandler);
 app.use(notFound);
