@@ -11,6 +11,30 @@ function index(req,res){
     })
     };
 
-  module.exports={index}
+  
+    function show(req, res) {
+        const id = parseInt(req.params.id);
+        const sqlPost = "SELECT * FROM movies WHERE id= ?";
+        connection.query(sqlPost, [id], (err, movieResults) => {
+          
+          const sqlReviews = `SELECT 
+            reviews.name, 
+            reviews.vote,  
+            reviews.created_at,
+            reviews.updated_at 
+            FROM movies 
+            INNER JOIN reviews 
+            ON reviews.movie_id=movies.id 
+            WHERE movies.id=?`;
+          connection.query(sqlReviews, [id], (err, reviewsResults) => {
+            const movie = {
+              ...movieResults[0],
+              reviews: reviewsResults,
+            };
+            res.json(movie);
+          });
+        });
+    }
+  module.exports={index,show}
 
 
