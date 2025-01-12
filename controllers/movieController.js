@@ -14,12 +14,13 @@ function index(req,res){
   
     function show(req, res) {
         const id = parseInt(req.params.id);
-        const sqlPost = "SELECT * FROM movies WHERE id= ?";
+        const sqlPost = " SELECT id,title,director,genre,release_year FROM movies WHERE id= ?";
         connection.query(sqlPost, [id], (err, movieResults) => {
           
           const sqlReviews = `SELECT 
             reviews.name, 
-            reviews.vote,  
+            reviews.vote,
+            reviews.text,  
             reviews.created_at,
             reviews.updated_at 
             FROM movies 
