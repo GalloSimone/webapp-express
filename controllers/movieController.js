@@ -1,8 +1,7 @@
 const connection = require("../db/data")
-
+//INDEX
 function index(req,res){
-
-    const sql='SELECT id,title,director,genre,release_year FROM movies';
+    const sql='SELECT id,title,image,director,genre,release_year FROM movies';
 
     connection.query(sql,(err,results)=>{
         console.log(results);
@@ -11,7 +10,7 @@ function index(req,res){
     })
     };
 
-  
+  //SHOW
     function show(req, res) {
         const id = parseInt(req.params.id);
         const sqlPost = " SELECT id,title,director,genre,release_year FROM movies WHERE id= ?";
@@ -35,7 +34,24 @@ function index(req,res){
             res.json(movie);
           });
         });
+    };
+
+    //CREATE
+    function createReviews (req,res){
+      const movieId = req.params.id;
+      const{name,vote,text}= req.body
+
+      const sql=`
+      INSERT INTO reviews (name,vote,text,movie_id)
+      VALUES (?,?,?,?);`
+
+      connection.query(sql,[name, vote, text, movieId],
+        (err,results)=>{
+          res.json({status:"OK", message: "Recensione aggiunta"})
+        }
+      )
+      
+
+
     }
-  module.exports={index,show}
-
-
+  module.exports={index,show,createReviews}
